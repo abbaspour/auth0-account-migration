@@ -7,33 +7,55 @@ This is a solution to facilitate migration from one [Auth0](www.auth0.com) accou
 How Does it Work?
 =================
 
-WIP
+It follows the same traditional model that Auth0 uses for migration from other identity providers. 
 
-`login.js` is used to create a custom database pointing to old account. After authentication, users are also created in new account's database.
+![Password Migration](https://cdn.auth0.com/content/email-wall/use-cases/database-migration/database-migration-logic.png)
 
-TBA diagram
+ 
+[login.js](login.js) is used to create a custom database pointing to old account. 
+It uses standard OpenID Connect `/token` interface to authenticate and receive `id_token` for customer profile in return.  
+After authentication, users are also created in new account's database.
+
 
 Installation
 ============
 
-TBA
+Custom Database
+---------------
 
+1. Go to your new account *Connections >> Database >> Username-Password-Authentication* section 
+2. Go to *Custom Database* tab and enable it
+3. Under *Login* section, past the code from [login.js](login.js) (see Configuration section below)
+4. Go back to *Settings* tab and enable *Import Users to Auth0* 
+ 
 Configuration
 -------------
-
-Add below items to custom database `Setting` section
+To configure [login.js](login.js), you need to have access to old account's dashboard and collect below details and
+ below items to custom database *Setting* section
 
 | Key | Sample Value | Description |
 |-----|-------|-------------|
-|Domain|amin02.auth0.com|domain of old account|
-|Audiance|https://amin02.auth0.com/api/v2/|API audiance of old account|
+|Domain|myolddomain.auth0.com|domain of old account|
+|Audiance|https://myolddomain.auth0.com/api/v2/|API audiance of old account|
 |Client_ID|XXXXXX|client ID of migration application in old account|
 |Client_Secret|YYYYY|client secret of migration application in old account|
+
+Bulk Import/Export
+==================
+1. Install Import/Export extension on both old and new accounts. 
+2. Export all accounts from old account into default JSON file
+3. Import JSON file from step 2 into new account using the extension
+ 
+
+Forgotten Password
+==================
+Users migrated with bulk import/export step won't have password in new account. 
+They will have to use *Don't remember your password?* link on login page in order to reset their passwords.
+
 
 Todo
 ====
 
 1. No consent page
-2. Forgotten password flow
- 
+2. host samples in heroku  
   
