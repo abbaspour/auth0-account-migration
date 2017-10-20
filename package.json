@@ -1,0 +1,23 @@
+{
+  "name": "auth0-account-migration",
+  "version": "1.0.0",
+  "description": "",
+  "main": "login-node.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/abbaspour/auth0-account-migration.git"
+  },
+  "author": "Amin Abbaspour",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/abbaspour/auth0-account-migration/issues"
+  },
+  "dependencies": {
+    "request": "^2.83.0",
+    "jwt-decode": "^2.2.0"
+  },
+  "homepage": "https://github.com/abbaspour/auth0-account-migration#readme"
+}
