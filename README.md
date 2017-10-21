@@ -20,6 +20,10 @@ After authentication, users are also created in new account's database.
 Installation
 ============
 
+Migration Client Application
+----------------------------
+TBA step by step guide to setup a migration application in old account. with requires scopes only.
+ 
 Custom Database
 ---------------
 
@@ -57,5 +61,9 @@ Todo
 ====
 
 1. No consent page
-2. host samples in heroku  
+2. host sample app in heroku
+3. steps to create a migration client in old account (management API, scope, scopes, etc)
+4. Q: add hook to disable user in old-account?
+5. add step to validate JWT on login? 
+6. Q: turn the code into an extension?
   
