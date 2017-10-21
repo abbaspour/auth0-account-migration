@@ -7,7 +7,7 @@ function login (username, password, callback){
         method: 'POST',
         form: {
             grant_type: 'password',
-            scope: 'openid',
+            scope: 'openid', // todo: add name to scope
             audience: configuration.Audiance,
             client_id: configuration.Client_ID,
             client_secret: configuration.Client_Secret,
