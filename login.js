@@ -1,14 +1,11 @@
 function login (username, password, callback){
-
-    // Utilizing the request library we make the REST call to Auth0
-    // Visit https://auth0.com/docs/api/authentication?http#resource-owner-password
     request({
         url: 'https://' + configuration.Domain + '/oauth/token',
         method: 'POST',
         form: {
             grant_type: 'password',
             scope: 'openid', // todo: add name to scope
-            audience: configuration.Audiance,
+            audience: configuration.Audience,
             client_id: configuration.Client_ID,
             client_secret: configuration.Client_Secret,
             username: username,

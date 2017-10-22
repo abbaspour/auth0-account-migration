@@ -5,7 +5,7 @@ function getByEmail (email, callback) {
         form: {
             grant_type: 'client_credentials',
             scope: 'read:users',
-            audience: configuration.Audiance,
+            audience: configuration.Audience,
             client_id: configuration.Client_ID,
             client_secret: configuration.Client_Secret
         },
@@ -18,7 +18,11 @@ function getByEmail (email, callback) {
             var access_token = body.access_token;
 
             request({
-                url: 'https://'+ configuration.Domain + '/api/v2/users?q=(blocked:false)AND(email:' + email + ')',
+                url: 'https://'+ configuration.Domain + '/api/v2/users',
+                qs: {
+                    //q: '(email:"' + email + '")AND(blocked:false)'
+                    q: 'email:"' + email + '"'
+                },
                 method: 'GET',
                 headers: {'content-type' : 'application/json', 'Authorization': 'Bearer ' + access_token}
             }, function(error, response, body) {
