@@ -18,7 +18,7 @@ function getByEmail (email, callback) {
             var access_token = body.access_token;
 
             request({
-                url: 'https://'+ configuration.Domain + '/api/v2/users?q=email:"' + email + '"',
+                url: 'https://'+ configuration.Domain + '/api/v2/users?q=(blocked:false)AND(email:' + email + ')',
                 method: 'GET',
                 headers: {'content-type' : 'application/json', 'Authorization': 'Bearer ' + access_token}
             }, function(error, response, body) {
