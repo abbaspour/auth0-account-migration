@@ -16,7 +16,7 @@ Password Migration
 3. No such user in new account
 <kbd>![Password Migration - Step 3](http://i65.tinypic.com/1zbrqz9.png)</kbd>
 
-4. Try to login with new user in new account
+4. Try to login with that user in new account
 <kbd>![Password Migration - Step 4](http://i65.tinypic.com/2jg3wn4.png)</kbd>
 
 5. Make sure login successful

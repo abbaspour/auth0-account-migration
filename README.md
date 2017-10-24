@@ -63,9 +63,9 @@ Put a name (such as "Migration App") and select **Non Interactive Client** type.
 
 
 
-#### Step 3: Creation Migration Application
+#### Step 3: Migration Application Details
 Migration client app will have its own `Domain` as well as auto generated `Client ID` and `Secret`. 
-Let's leave it there for now, we'll come back to grab these values when setting up migration scripts in your new account.
+Let's leave it there for now. We'll come back to grab these values when setting up migration scripts in your new account.
 
 <kbd>![Client Settings](http://i64.tinypic.com/2rf6gsz.png)</kbd>
  
@@ -91,14 +91,18 @@ There's no harm keeping rest of grant types but for this application you *must* 
 
 <kbd>![Grant Types](http://i64.tinypic.com/29nul8z.png)</kbd>
 
+For those interested to dig deeper, "Client Credentials" is used to validate user's input
+username and password in [login.js](login.js#L6) and "Password" grant type is used to generate a new management API `access_token` so 
+[getUser.js](getUser.js#L6) can invoke search API. 
 
-
+Both endpoints also receive `client_id` and `client_secret` for authentication in the body of `POST` request as 
+configured in [Step 4](#step-4-configure-token-endpoint-authentication-method).
 
 #### Step 6: Management API Audience
 We're done with the client application creation but there's still a few more steps required in old account. 
 Go back to dashboard and this time click on **API** section. 
 This should open up Auth0 Management API client section and its **API Audience**. 
-Similar to client Domain, ID and secret, we'll need the value for Audience URL when configuring the new account scripts.
+Similar to client `Domain`, `ID` and `Secret`, we'll need the value for Audience URL when configuring the new account scripts.
 
 <kbd>![Management API Audience](http://i68.tinypic.com/15zgllz.png)</kbd>
 
@@ -107,14 +111,14 @@ Similar to client Domain, ID and secret, we'll need the value for Audience URL w
 #### Step 7: Authorize Migration Client Call Management API 
 Click on the **Auth0 Management API** link and select the **Non Interactive Clients** tab. 
 Here you'll see list of your client applications. Make sure **Migration App** is **Authorized** to call management API.
-Note if your creation client application has any other name ([step 2](#step-2-creation-migration-application)), the same name will be shown here.  
+Note if your creation client application has any other name ([Step 2](#step-2-creation-migration-application)), the same name will be shown here.  
 
 <kbd>![Management API Audience](http://i68.tinypic.com/1687n9d.png)</kbd>
  
 
 
 #### Step 8: Limit Management API Scope of Migration App
-Management API is pretty powerful and we only need a very small subset in order to perform the migration task.
+Management API is pretty powerful and we only need a small subset in order to perform the migration task.
 Go to **Scopes** tab and only select **`read:users`**.
 
 
@@ -171,9 +175,9 @@ Here we'll add four values from old account setup as Key/Value parameters.
 
 | Key | Sample Value | Description |Setup Step|
 | ----- |-------|-------------|-------|
-|`Domain`|`amin02.auth0.com`|Domain of Migration App|[Step 3](#step-3-creation-migration-application)|
-|`Client_ID`|`7eph1tcmdmmYZq0znMSYn36BqMTbD6WD`|Client ID of Migration App|[Step 3](#step-3-creation-migration-application)|
-|`Client_Secret`|`Y2aepoy.........6yidAyFz`|Client Secret of Migration App|[Step 3](#step-3-creation-migration-application)|
+|`Domain`|`amin02.auth0.com`|Domain of Migration App|[Step 3](#step-3-migration-application-details)|
+|`Client_ID`|`7eph1tcmdmmYZq0znMSYn36BqMTbD6WD`|Client ID of Migration App|[Step 3](#step-3-migration-application-details)|
+|`Client_Secret`|`Y2aepoy.........6yidAyFz`|Client Secret of Migration App|[Step 3](#step-3-migration-application-details)|
 |`Audience`|`https://amin02.auth0.com/api/v2/`|Management API audience of old account|[Step 6](#step-6-management-api-audience)|
 
 
@@ -212,16 +216,3 @@ To achieve this, follow the below steps at the end of migration phase:
 Users migrated with bulk import/export step don't have their passwords in the new account. 
 They will have to use "Don't remember your password?" link on login page to reset their passwords.
 
-
-Todo
-====
-- add step to validate JWT on login?
-- name mapping on migration
-
-Questions
-=========
-- add hook to disable user in old-account?
-- turn the code into an extension?
- 
-
-  
