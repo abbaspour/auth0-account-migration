@@ -1,4 +1,5 @@
 function getByEmail (email, callback) {
+    // to use Auth0 search API, first we need a management API `access_token`
     request({
         url: 'https://' + configuration.Domain + '/oauth/token',
         method: 'POST',
@@ -14,29 +15,32 @@ function getByEmail (email, callback) {
     }, function(error, response, body){
         if(error) {
             callback(error);
-        } else {
-            var access_token = body.access_token;
-
+        } else if (body.access_token) {
+            // now we have `access_token` and call invoke users `search` api
             request({
                 url: 'https://'+ configuration.Domain + '/api/v2/users',
                 qs: {
                     //q: '(email:"' + email + '")AND(blocked:false)'
-                    q: 'email:"' + email + '"'
+                    q: 'email:"' + email + '"' // query with email, using `qs` to take care of URL encoding
                 },
                 method: 'GET',
-                headers: {'content-type' : 'application/json', 'Authorization': 'Bearer ' + access_token}
+                headers: {'content-type' : 'application/json', 'Authorization': 'Bearer ' + body.access_token}
             }, function(error, response, body) {
                 if(error) {
                     callback(error);
                 } else {
                     var users = JSON.parse(body);
-                    if(users) {
+                    // If what we get is an empty array, we know that we did not find the user in which case nothing happens
+                    // otherwise we return first element of array. hopefully with email search there is only one entry
+                    if(Array.isArray(users) && users.length > 0) {
                         callback(null, users[0]);
                     } else {
-                        callback('no users found');
+                        callback();
                     }
                 }
             });
+        } else {
+            callback();
         }
     });
 }
