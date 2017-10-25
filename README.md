@@ -64,7 +64,7 @@ Put a name (such as "Migration App") and select **Non Interactive Client** type.
 
 
 #### Step 3: Migration Application Details
-Migration client app will have its own `Domain` as well as auto generated `Client ID` and `Secret`. 
+Migration client app will have its own `Domain` as well as auto-generated `Client ID` and `Secret`. 
 Let's leave it there for now. We'll come back to grab these values when setting up migration scripts in your new account.
 
 <kbd>![Client Settings](http://i64.tinypic.com/2rf6gsz.png)</kbd>
@@ -93,7 +93,7 @@ There's no harm keeping rest of grant types but for this application you *must* 
 
 For those interested to dig deeper, "Client Credentials" is used to validate user's input
 username and password in [login.js](login.js#L6) and "Password" grant type is used to generate a new management API `access_token` so 
-[getUser.js](getUser.js#L6) can invoke search API. 
+[getUser.js](getUser.js#L7) can invoke search API. 
 
 Both endpoints also receive `client_id` and `client_secret` for authentication in the body of `POST` request as 
 configured in [Step 4](#step-4-configure-token-endpoint-authentication-method).
@@ -108,21 +108,30 @@ Similar to client `Domain`, `ID` and `Secret`, we'll need the value for Audience
 
 
 
-#### Step 7: Authorize Migration Client Call Management API 
+#### Step 7: Authorize Migration App Call Management API 
 Click on the **Auth0 Management API** link and select the **Non Interactive Clients** tab. 
 Here you'll see list of your client applications. Make sure **Migration App** is **Authorized** to call management API.
-Note if your creation client application has any other name ([Step 2](#step-2-creation-migration-application)), the same name will be shown here.  
+Note if your creation client application has any other name ([Step 2](#step-2-creation-migration-application)), 
+same is shown here.  
 
 <kbd>![Management API Audience](http://i68.tinypic.com/1687n9d.png)</kbd>
  
 
 
 #### Step 8: Limit Management API Scope of Migration App
-Management API is pretty powerful and we only need a small subset in order to perform the migration task.
+Management API is pretty powerful and we only need a small subset in order to perform migration task.
 Go to **Scopes** tab and only select **`read:users`**.
 
 
 <kbd>![Management API Scope](http://i65.tinypic.com/vfaiq.png)</kbd>
+
+#### Step 9: Add A Rule for Profile Metadata 
+
+Go to **Rules** section of dashboard and click on "Create (Your First) Rule", then select **empty rule** template. Put the
+rule name as "add user and app metadata to profile" and copy [metadata-rule.js](metadata-rule.js) code to editor and Save.
+
+<kbd>![Add Metadata Rule](http://i67.tinypic.com/2zdufxz.png)</kbd>
+
 
 
 Congratulation, we are done setting up the migration client in your old account which is the bulk of work. 
@@ -134,15 +143,14 @@ New account is the one we're migrating customer to. As we mentioned in "[How Doe
 it has its own database that gradually grow as customers login. 
     
 
-#### Step 9: Go to Database 
-To get started let's login to your new account and go to [management dashboard](manage.auth0.com), 
-then click **Connections** >> **Database** >> **Username-Password-Authentication**.
+#### Step 10: Go to Database 
+To get started let's login to your new account and go **Connections** >> **Database** >> **Username-Password-Authentication**.
 
 <kbd>![Database Connection](http://i63.tinypic.com/2igygxz.png)</kbd>
 
 
 
-#### Step 10: Custom Database
+#### Step 11: Custom Database
 Within Database settings page, go to **Custom Database** tab and enable **Use my own database** flag. 
 
 <kbd>![Enable Custom Database](http://i67.tinypic.com/2lm9vfn.png)</kbd>
@@ -150,22 +158,22 @@ Within Database settings page, go to **Custom Database** tab and enable **Use my
 
 
 
-#### Step 11: Database Action Scripts - Login
+#### Step 12: Database Action Scripts - Login
 Once you've enabled the custom database mode, scroll down to **Database Action Scripts** section. Here you have two tabs. 
 Select **Login** tab and replace the sample code with the code from [login.js](login.js), then click Save.
   
-<kbd>![Login Script](http://i65.tinypic.com/4hqvr.png)</kbd>
+<kbd>![Login Script](http://i66.tinypic.com/xcrlhf.png)</kbd>
 
 
 
-#### Step 12: Database Action Scripts - Get User
+#### Step 13: Database Action Scripts - Get User
 Now switch to **Get User** tab and copy the code from [getUser.js](getUser.js) into the box and click Save.
 
 <kbd>![Get User Script](http://i64.tinypic.com/21axunr.png)</kbd>
 
 
 
-#### Step 13: Scripts Settings
+#### Step 14: Scripts Settings
 We're almost there with our custom database scripts. Only remaining bit is to scroll further down the page to **Settings** section.
 Here we'll add four values from old account setup as Key/Value parameters. 
 
@@ -181,7 +189,7 @@ Here we'll add four values from old account setup as Key/Value parameters.
 |`Audience`|`https://amin02.auth0.com/api/v2/`|Management API audience of old account|[Step 6](#step-6-management-api-audience)|
 
 
-#### Step 14: Enable Import Users to Auth0
+#### Step 15: Enable Import Users to Auth0
 Last step of configuration is to go back to **Settings** tab in database settings and 
 **Enable Import Users to Auth0** flag. This is *critical* as it enables Auth0 to collect password and store accounts as customers login. 
   
@@ -213,6 +221,8 @@ To achieve this, follow the below steps at the end of migration phase:
 <kbd>![Bulk - Review](http://i66.tinypic.com/10ng5kg.png)</kbd>
  
 
-Users migrated with bulk import/export step don't have their passwords in the new account. 
-They will have to use "Don't remember your password?" link on login page to reset their passwords.
+
+
+> **NOTE:** Users migrated with bulk import/export step don't have their passwords in the new account. 
+> They have to use "Don't remember your password?" link on login page to reset their password.
 
