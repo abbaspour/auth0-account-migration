@@ -3,15 +3,14 @@ function getByEmail (email, callback) {
     request({
         url: 'https://' + configuration.Domain + '/oauth/token',
         method: 'POST',
-        form: {
+        json: {
             grant_type: 'client_credentials',
             scope: 'read:users',
             audience: configuration.Audience,
             client_id: configuration.Client_ID,
             client_secret: configuration.Client_Secret
         },
-        headers: {'content-type' : 'application/json'},
-        json: true
+        headers: {'content-type' : 'application/json'}
     }, function(error, response, body){
         if(error) {
             callback(error);
