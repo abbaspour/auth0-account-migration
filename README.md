@@ -187,6 +187,7 @@ Here we'll add four values from old account setup as Key/Value parameters.
 |`Client_ID`|`7eph1tcmdmmYZq0znMSYn36BqMTbD6WD`|Client ID of Migration App|[Step 3](#step-3-migration-application-details)|
 |`Client_Secret`|`Y2aepoy.........6yidAyFz`|Client Secret of Migration App|[Step 3](#step-3-migration-application-details)|
 |`Audience`|`https://amin02.auth0.com/api/v2/`|Management API audience of old account|[Step 6](#step-6-management-api-audience)|
+|`Connection`|`TESTDB`|Connection name in old account||
 
 
 #### Step 15: Enable Import Users to Auth0

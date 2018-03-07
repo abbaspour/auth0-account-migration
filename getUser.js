@@ -1,45 +1,27 @@
 function getByEmail (email, callback) {
     // to use Auth0 search API, first we need a management API `access_token`
-    request({
-        url: 'https://' + configuration.Domain + '/oauth/token',
-        method: 'POST',
-        json: {
-            grant_type: 'client_credentials',
-            scope: 'read:users',
-            audience: configuration.Audience,
-            client_id: configuration.Client_ID,
-            client_secret: configuration.Client_Secret
-        },
-        headers: {'content-type' : 'application/json'}
-    }, function(error, response, body){
-        if(error) {
-            callback(error);
-        } else if (body.access_token) {
-            // now we have `access_token` and call invoke users `search` api
-            request({
-                url: 'https://'+ configuration.Domain + '/api/v2/users',
-                qs: {
-                    //q: '(email:"' + email + '")AND(blocked:false)'
-                    q: 'email:"' + email + '"' // query with email, using `qs` to take care of URL encoding
-                },
-                method: 'GET',
-                headers: {'content-type' : 'application/json', 'Authorization': 'Bearer ' + body.access_token}
-            }, function(error, response, body) {
-                if(error) {
-                    callback(error);
-                } else {
-                    var users = JSON.parse(body);
-                    // If what we get is an empty array, we know that we did not find the user in which case nothing happens
-                    // otherwise we return first element of array. hopefully with email search there is only one entry
-                    if(Array.isArray(users) && users.length > 0) {
-                        callback(null, users[0]);
-                    } else {
-                        callback();
-                    }
-                }
-            });
+    var tools = require('auth0-extension-tools@1.3.1');
+    tools.managementApi.getClient({domain: configuration.Domain, clientId: configuration.Client_ID, clientSecret: configuration.Client_Secret})
+    .then(function(client) {
+      var params = {
+        q: 'email:"' + email + '" AND identities.connection:"' + configuration.Connection + '"'
+      };
+      client.users.getAll(params, function (err, users){
+        if (err) return callback(err);
+        else if(Array.isArray(users) && users.length > 0) {
+            var profile = {};
+            var openidProfile = users[0];
+            profile.name = openidProfile.name || '';
+            profile.nickname = openidProfile.nickname || '';
+            profile.email = openidProfile.email;
+            profile.email_verified = openidProfile.email_verified || false;
+            profile.user_id = openidProfile.user_id.replace(/^auth0/,configuration.Domain);
+            profile.user_metadata = openidProfile.user_metadata || {};
+            profile.app_metadata = openidProfile.app_metadata || {};
+            return callback(null, profile);
         } else {
-            callback();
+            return callback();
         }
+      });
     });
 }
