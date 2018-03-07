@@ -93,7 +93,7 @@ There's no harm keeping rest of grant types but for this application you *must* 
 
 For those interested to dig deeper, "Client Credentials" is used to validate user's input
 username and password in [login.js](login.js#L6) and "Password" grant type is used to generate a new management API `access_token` so 
-[getUser.js](getUser.js#L7) can invoke search API. 
+[get_user.js](get_user.js#L7) can invoke search API. 
 
 Both endpoints also receive `client_id` and `client_secret` for authentication in the body of `POST` request as 
 configured in [Step 4](#step-4-configure-token-endpoint-authentication-method).
@@ -167,7 +167,7 @@ Select **Login** tab and replace the sample code with the code from [login.js](l
 
 
 #### Step 13: Database Action Scripts - Get User
-Now switch to **Get User** tab and copy the code from [getUser.js](getUser.js) into the box and click Save.
+Now switch to **Get User** tab and copy the code from [get_user.js](get_user.js) into the box and click Save.
 
 <kbd>![Get User Script](http://i64.tinypic.com/21axunr.png)</kbd>
 
