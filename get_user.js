@@ -4,7 +4,7 @@ function getByEmail (email, callback) {
     tools.managementApi.getClient({domain: configuration.Domain, clientId: configuration.Client_ID, clientSecret: configuration.Client_Secret})
     .then(function(client) {
       var params = {
-        q: 'email:"' + email + '" AND identities.connection:"' + configuration.Connection + '"'
+        q: 'email:"' + email + '" AND identities.connection:"' + configuration.Connection + '" !app_metadata.migration_complete:true'
       };
       client.users.getAll(params, function (err, users){
         if (err) return callback(err);
