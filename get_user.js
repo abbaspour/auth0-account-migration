@@ -4,7 +4,7 @@ function getByEmail (email, callback) {
     tools.managementApi.getClient({domain: configuration.Domain, clientId: configuration.Client_ID, clientSecret: configuration.Client_Secret})
     .then(function(client) {
       var params = {
-        q: 'email:"' + email + '" AND identities.connection:"' + configuration.Connection + '" !app_metadata.migration_complete:true'
+        q: 'email:"' + email + '" AND identities.connection:"' + configuration.Connection
       };
       client.users.getAll(params, function (err, users){
         if (err) return callback(err);
@@ -15,7 +15,7 @@ function getByEmail (email, callback) {
             profile.nickname = openidProfile.nickname || '';
             profile.email = openidProfile.email;
             profile.email_verified = openidProfile.email_verified || false;
-            profile.user_id = openidProfile.user_id.replace(/^auth0/,configuration.Domain);
+            profile.user_id = openidProfile.user_id.replace('auth0|' , ");
             profile.user_metadata = openidProfile.user_metadata || {};
             profile.app_metadata = openidProfile.app_metadata || {};
             return callback(null, profile);
